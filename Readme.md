@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Анастасия Захваткина](https://up.htmlacademy.ru/javascript/16/user/490491).
-* Наставник: `Неизвестно`.
+* Наставник: [Екатерина Малецкая](https://htmlacademy.ru/profile/id902197).
 
 ---
 
