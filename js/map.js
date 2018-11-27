@@ -5,13 +5,13 @@ var ADVERTISEMENT_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var ADVERTISEMENT_TIMES = ['12:00', '13:00', '14:00'];
 var ADVERTISEMENT_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var ADVERTISEMENT_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-var PINWIDTH = 50;
-var PINHEIGHT = 70;
-var MAPPINTEMPLATE = document.querySelector('#pin').content.querySelector('.map__pin');
-var MAPCARDTEMPLATE = document.querySelector('#card').content.querySelector('.map__card');
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
+var MAP_PIN_TEMPLATE = document.querySelector('#pin').content.querySelector('.map__pin');
+var MAP_CARD_TEMPLATE = document.querySelector('#card').content.querySelector('.map__card');
 var MAP = document.querySelector('.map');
-var MAPPINS = MAP.querySelector('.map__pins');
-var MAPFILTERSCONTAINER = MAP.querySelector('.map__filters-container');
+var MAP_PINS = MAP.querySelector('.map__pins');
+var MAP_FILTERS_CONTAINER = MAP.querySelector('.map__filters-container');
 
 var selectRandomItem = function (array) {
   return array[Math.floor(Math.random() * array.length)];
@@ -22,8 +22,8 @@ var getRandomNumberFromRange = function (firstValue, lastValue) {
 };
 
 var selectFeatures = function (array) {
-  var mixArray = getMixArrays(array);
   var randomIndex = getRandomNumberFromRange(0, array.length - 1);
+  var mixArray = getMixArrays(array);
   return mixArray.splice(0, randomIndex);
 };
 
@@ -48,7 +48,7 @@ var generateNewAdvertisement = function (index) {
   var randomTitleIndex = getRandomNumberFromRange(0, ADVERTISEMENT_TITLES.length - 1);
   var randomTitle = ADVERTISEMENT_TITLES.splice(randomTitleIndex, 1);
 
-  var locationX = getRandomNumberFromRange(PINWIDTH / 2, MAP.offsetWidth - PINWIDTH / 2);
+  var locationX = getRandomNumberFromRange(PIN_WIDTH / 2, MAP.offsetWidth - PIN_WIDTH / 2);
   var locationY = getRandomNumberFromRange(130, 630);
 
   return {
@@ -88,9 +88,9 @@ var generateAdvertisementsList = function (count) {
 };
 
 var generatePin = function (advertisement) {
-  var pinElement = MAPPINTEMPLATE.cloneNode(true);
-  pinElement.style.left = (advertisement.location.x - PINWIDTH / 2) + 'px';
-  pinElement.style.top = (advertisement.location.y - PINHEIGHT) + 'px';
+  var pinElement = MAP_PIN_TEMPLATE.cloneNode(true);
+  pinElement.style.left = (advertisement.location.x - PIN_WIDTH / 2) + 'px';
+  pinElement.style.top = (advertisement.location.y - PIN_HEIGHT) + 'px';
 
   var pinImgElement = pinElement.querySelector('img');
   pinImgElement.alt = advertisement.offer.title;
@@ -105,10 +105,10 @@ var setPins = function (advertisements) {
     fragment.appendChild(generatePin(advertisements[i]));
   }
 
-  MAPPINS.appendChild(fragment);
+  MAP_PINS.appendChild(fragment);
 };
 
-var returnAdvertisementType = function (advertisementType) {
+var getAdvertisementType = function (advertisementType) {
   switch (advertisementType) {
     case 'flat':
       return 'Квартира';
@@ -159,11 +159,11 @@ var renderFeatures = function (advertisementElement, advertisementFeatures) {
 };
 
 var generateAdvertisementElement = function (advertisement) {
-  var advertisementElement = MAPCARDTEMPLATE.cloneNode(true);
+  var advertisementElement = MAP_CARD_TEMPLATE.cloneNode(true);
   advertisementElement.querySelector('.popup__title').textContent = advertisement.offer.title;
   advertisementElement.querySelector('.popup__text--address').textContent = advertisement.offer.address;
   advertisementElement.querySelector('.popup__text--price').textContent = advertisement.offer.price + '₽/ночь';
-  advertisementElement.querySelector('.popup__type').textContent = returnAdvertisementType(advertisement.offer.type);
+  advertisementElement.querySelector('.popup__type').textContent = getAdvertisementType(advertisement.offer.type);
 
   var advertisementCapacity = advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостей';
   advertisementElement.querySelector('.popup__text--capacity').textContent = advertisementCapacity;
@@ -179,13 +179,8 @@ var generateAdvertisementElement = function (advertisement) {
   return advertisementElement;
 };
 
-var renderAdvertisements = function (advertisements) {
-  var fragment = document.createDocumentFragment();
-  for (var i = 0; i < advertisements.length; i++) {
-    fragment.appendChild(generateAdvertisementElement(advertisements[i]));
-  }
-
-  MAP.insertBefore(fragment, MAPFILTERSCONTAINER);
+var renderAdvertisement = function (advertisement) {
+  MAP.insertBefore(generateAdvertisementElement(advertisement), MAP_FILTERS_CONTAINER);
 };
 
 var switchMap = document.querySelector('.map');
@@ -195,5 +190,5 @@ var allAdvertisements = generateAdvertisementsList(8);
 
 setPins(allAdvertisements);
 
-renderAdvertisements(allAdvertisements);
+renderAdvertisement(allAdvertisements[0]);
 
