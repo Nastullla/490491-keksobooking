@@ -15,7 +15,6 @@ var MAP = document.querySelector('.map');
 var MAP_PINS = MAP.querySelector('.map__pins');
 var MAP_FILTERS_CONTAINER = MAP.querySelector('.map__filters-container');
 var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
 
 var selectRandomItem = function (array) {
   return array[Math.floor(Math.random() * array.length)];
@@ -100,14 +99,14 @@ var generatePin = function (advertisement) {
   pinImgElement.alt = advertisement.offer.title;
   pinImgElement.src = advertisement.author.avatar;
 
-  pinElement.addEventListener('click', function(evt) {
+  pinElement.addEventListener('click', function () {
     closePopup();
     renderAdvertisement(advertisement);
 
     var popup = MAP.querySelector('.popup');
     var popupClose = popup.querySelector('.popup__close');
 
-    popupClose.addEventListener('click', function() {
+    popupClose.addEventListener('click', function () {
       closePopup();
     });
   });
@@ -199,9 +198,6 @@ var renderAdvertisement = function (advertisement) {
   MAP.insertBefore(generateAdvertisementElement(advertisement), MAP_FILTERS_CONTAINER);
 };
 
-var switchMap = document.querySelector('.map');
-// switchMap.classList.remove('map--faded');
-
 var allAdvertisements = generateAdvertisementsList(8);
 // setPins(allAdvertisements);
 // renderAdvertisement(allAdvertisements[0]);
@@ -246,7 +242,7 @@ var setAddress = function () {
           + (MAP_PIN_MAIN.offsetTop + MAIN_PIN_HEIGHT);
 };
 
-MAP_PIN_MAIN.addEventListener('mouseup', function(evt) {
+MAP_PIN_MAIN.addEventListener('mouseup', function () {
   activateState();
   setAddress();
   setPins(allAdvertisements);
@@ -260,7 +256,7 @@ var closePopup = function () {
   }
 };
 
-document.addEventListener('keydown', function(evt) {
+document.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     closePopup();
   }
