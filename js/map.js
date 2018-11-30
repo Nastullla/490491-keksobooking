@@ -235,6 +235,7 @@ var activateState = function () {
   setDisabled(AD_FORM_SELECT, false);
   setDisabled(MAP_FILTERS_INPUT, false);
   setDisabled(MAP_FILTERS_SELECT, false);
+  ADDRESS.disabled = true;
 };
 
 var setAddress = function () {
