@@ -203,19 +203,18 @@ var allAdvertisements = generateAdvertisementsList(8);
 // renderAdvertisement(allAdvertisements[0]);
 
 /* ----------------------------------------------------- */
+
 var AD_FORM = document.querySelector('.ad-form');
-var AD_FORM_INPUT = AD_FORM.querySelectorAll('input');
-var AD_FORM_SELECT = AD_FORM.querySelectorAll('select');
+var AD_FORM_INPUTS = AD_FORM.querySelectorAll('input');
+var AD_FORM_SELECTS = AD_FORM.querySelectorAll('select');
 
 var MAP_FILTERS = MAP.querySelector('.map__filters');
-var MAP_FILTERS_INPUT = MAP_FILTERS.querySelectorAll('input');
-var MAP_FILTERS_SELECT = MAP_FILTERS.querySelectorAll('select');
+var MAP_FILTERS_INPUTS = MAP_FILTERS.querySelectorAll('input');
+var MAP_FILTERS_SELECTS = MAP_FILTERS.querySelectorAll('select');
 
 var MAP_PIN_MAIN = MAP_PINS.querySelector('.map__pin--main');
 
 var ADDRESS = AD_FORM.querySelector('input[name="address"]');
-ADDRESS.value = (MAP_PIN_MAIN.offsetLeft + MAIN_PIN_WIDTH / 2) + ', '
-                  + (MAP_PIN_MAIN.offsetTop + MAIN_PIN_WIDTH / 2);
 
 var setDisabled = function (array, isDisabled) {
   for (var i = 0; i < array.length; i++) {
@@ -223,24 +222,28 @@ var setDisabled = function (array, isDisabled) {
   }
 };
 
-setDisabled(AD_FORM_INPUT, true);
-setDisabled(AD_FORM_SELECT, true);
-setDisabled(MAP_FILTERS_INPUT, true);
-setDisabled(MAP_FILTERS_SELECT, true);
+var init = function () {
+  ADDRESS.value = (MAP_PIN_MAIN.offsetLeft + MAIN_PIN_WIDTH / 2) + ', '
+                + (MAP_PIN_MAIN.offsetTop + MAIN_PIN_WIDTH / 2);
+  setDisabled(AD_FORM_INPUTS, true);
+  setDisabled(AD_FORM_SELECTS, true);
+  setDisabled(MAP_FILTERS_INPUTS, true);
+  setDisabled(MAP_FILTERS_SELECTS, true);
+};
 
 var activateState = function () {
   MAP.classList.remove('map--faded');
   AD_FORM.classList.remove('ad-form--disabled');
-  setDisabled(AD_FORM_INPUT, false);
-  setDisabled(AD_FORM_SELECT, false);
-  setDisabled(MAP_FILTERS_INPUT, false);
-  setDisabled(MAP_FILTERS_SELECT, false);
+  setDisabled(AD_FORM_INPUTS, false);
+  setDisabled(AD_FORM_SELECTS, false);
+  setDisabled(MAP_FILTERS_INPUTS, false);
+  setDisabled(MAP_FILTERS_SELECTS, false);
   ADDRESS.disabled = true;
 };
 
 var setAddress = function () {
   ADDRESS.value = (MAP_PIN_MAIN.offsetLeft + MAIN_PIN_WIDTH / 2) + ', '
-          + (MAP_PIN_MAIN.offsetTop + MAIN_PIN_HEIGHT);
+                + (MAP_PIN_MAIN.offsetTop + MAIN_PIN_HEIGHT);
 };
 
 MAP_PIN_MAIN.addEventListener('mouseup', function () {
@@ -262,3 +265,5 @@ document.addEventListener('keydown', function (evt) {
     closePopup();
   }
 });
+
+init();
