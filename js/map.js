@@ -215,6 +215,19 @@ var MAP_FILTERS_SELECTS = MAP_FILTERS.querySelectorAll('select');
 var MAP_PIN_MAIN = MAP_PINS.querySelector('.map__pin--main');
 
 var ADDRESS = AD_FORM.querySelector('input[name="address"]');
+var PRICEINPUT = AD_FORM.querySelector('input[name = price]');
+var TITLEINPUT = AD_FORM.querySelector('input[name = title]');
+
+var TYPE = AD_FORM.querySelector('select[name="type"]');
+var TIMEIN = AD_FORM.querySelector('select[name="timein"]');
+var TIMEOUT = AD_FORM.querySelector('select[name="timeout"]');
+var ROOMS = AD_FORM.querySelector('select[name="rooms"]');
+var CAPACITY = AD_FORM.querySelector('select[name="capacity"]');
+
+var setAddress = function () {
+  ADDRESS.value = (MAP_PIN_MAIN.offsetLeft + MAIN_PIN_WIDTH / 2) + ', '
+                + (MAP_PIN_MAIN.offsetTop + MAIN_PIN_HEIGHT);
+};
 
 var setDisabled = function (array, isDisabled) {
   for (var i = 0; i < array.length; i++) {
@@ -222,9 +235,62 @@ var setDisabled = function (array, isDisabled) {
   }
 };
 
+var getMinPrice = function (typeHouseroom) {
+  switch (typeHouseroom) {
+    case 'bungalo':
+      return 0;
+    case 'flat':
+      return 1000;
+    case 'house':
+      return 5000;
+    case 'palace':
+      return 10000;
+    default:
+      return 0;
+  }
+};
+
+TIMEIN.addEventListener('change', function (evt) {
+  TIMEOUT.value = evt.target.value;
+});
+
+TIMEOUT.addEventListener('change', function (evt) {
+  TIMEIN.value = evt.target.value;
+});
+
+var setCapacityDependency = function (roomsValue) {
+  if (roomsValue === '100') {
+    for (var i = 0; i < capacity.length; i++) {
+      if (capacity[i].value === '0') {
+        capacity[i].disabled = false; //видимы
+      } else {
+        capacity[i].disabled = true; //невидимы
+      }
+    }
+  } else {
+    for (var i = 0; i < capacity.length; i++) {
+      if (roomsValue >= capacity[i].value && capacity[i].value !== '0') {
+        capacity[i].disabled = false; //видимы
+      } else {
+        capacity[i].disabled = true; //невидимы
+      }
+    }
+  }
+};
+
+ROOMS.addEventListener('change', function (evt) {
+  setCapacityDependency(evt.target.value);
+});
+
+
 var init = function () {
   ADDRESS.value = (MAP_PIN_MAIN.offsetLeft + MAIN_PIN_WIDTH / 2) + ', '
                 + (MAP_PIN_MAIN.offsetTop + MAIN_PIN_WIDTH / 2);
+  PRICEINPUT.min = getMinPrice(TYPE.value);
+  PRICEINPUT.placeholder = PRICEINPUT.min;
+  TIMEOUT.value = TIMEIN.value;
+  setCapacityDependency(ROOMS.value);
+
   setDisabled(AD_FORM_INPUTS, true);
   setDisabled(AD_FORM_SELECTS, true);
   setDisabled(MAP_FILTERS_INPUTS, true);
@@ -239,11 +305,6 @@ var activateState = function () {
   setDisabled(MAP_FILTERS_INPUTS, false);
   setDisabled(MAP_FILTERS_SELECTS, false);
   ADDRESS.disabled = true;
-};
-
-var setAddress = function () {
-  ADDRESS.value = (MAP_PIN_MAIN.offsetLeft + MAIN_PIN_WIDTH / 2) + ', '
-                + (MAP_PIN_MAIN.offsetTop + MAIN_PIN_HEIGHT);
 };
 
 MAP_PIN_MAIN.addEventListener('mouseup', function () {
@@ -267,3 +328,40 @@ document.addEventListener('keydown', function (evt) {
 });
 
 init();
+
+/* ----------------------------------------------------- */
+
+var setValidation = function (input) {
+  input.addEventListener('invalid', function () {
+    if (input.validity.tooShort) {
+      input.setCustomValidity('Имя должно состоять минимум из ' + input.minLength + '-х символов');
+    } else if (input.validity.rangeUnderflow) {
+      input.setCustomValidity('Число должно быть больше ' + input.min);
+    } else if (input.validity.rangeOverflow) {
+      input.setCustomValidity('Число должно быть меньше ' + input.max);
+    } else if (input.validity.valueMissing) {
+      input.setCustomValidity('Обязательное поле');
+    } else {
+      input.setCustomValidity('');
+    }
+  });
+
+  input.addEventListener('input', function (evt) {
+    var target = evt.target;
+    if (target.value.length === 0) {
+      target.setCustomValidity('Обязательное поле');
+    } else if (target.value.length < input.minLength) {
+      target.setCustomValidity('Имя должно состоять минимум из ' + input.minLength + '-х символов');
+    } else {
+      target.setCustomValidity('');
+    }
+
+  });
+};
+
+setValidation(TITLEINPUT);
+setValidation(PRICEINPUT);
+
+CAPACITY.addEventListener('invalid', function () {
+  console.log(CAPACITY.validity);
+});
