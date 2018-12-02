@@ -265,19 +265,19 @@ TIMEOUT.addEventListener('change', function (evt) {
 
 var setCapacityDependency = function (roomsValue) {
   if (roomsValue === '100') {
-    for (var i = 0; i < capacity.length; i++) {
-      if (capacity[i].value === '0') {
-        capacity[i].disabled = false; //видимы
+    for (var i = 0; i < CAPACITY.length; i++) {
+      if (CAPACITY[i].value === '0') {
+        CAPACITY[i].disabled = false; // видимы
       } else {
-        capacity[i].disabled = true; //невидимы
+        CAPACITY[i].disabled = true; // невидимы
       }
     }
   } else {
-    for (var i = 0; i < capacity.length; i++) {
-      if (roomsValue >= capacity[i].value && capacity[i].value !== '0') {
-        capacity[i].disabled = false; //видимы
+    for (i = 0; i < CAPACITY.length; i++) {
+      if (roomsValue >= CAPACITY[i].value && CAPACITY[i].value !== '0') {
+        CAPACITY[i].disabled = false; // видимы
       } else {
-        capacity[i].disabled = true; //невидимы
+        CAPACITY[i].disabled = true; // невидимы
       }
     }
   }
