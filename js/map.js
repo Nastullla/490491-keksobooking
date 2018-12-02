@@ -250,6 +250,11 @@ var getMinPrice = function (typeHouseroom) {
   }
 };
 
+TYPE.addEventListener('change', function (evt) {
+  PRICEINPUT.min = getMinPrice(evt.target.value);
+  PRICEINPUT.placeholder = PRICEINPUT.min;
+});
+
 TIMEIN.addEventListener('change', function (evt) {
   TIMEOUT.value = evt.target.value;
 });
@@ -281,7 +286,6 @@ var setCapacityDependency = function (roomsValue) {
 ROOMS.addEventListener('change', function (evt) {
   setCapacityDependency(evt.target.value);
 });
-
 
 var init = function () {
   ADDRESS.value = (MAP_PIN_MAIN.offsetLeft + MAIN_PIN_WIDTH / 2) + ', '
@@ -327,8 +331,6 @@ document.addEventListener('keydown', function (evt) {
   }
 });
 
-init();
-
 /* ----------------------------------------------------- */
 
 var setValidation = function (input) {
@@ -355,13 +357,17 @@ var setValidation = function (input) {
     } else {
       target.setCustomValidity('');
     }
-
   });
 };
 
+AD_FORM.addEventListener('submit', function (evt) {
+  if (CAPACITY.selectedOptions[0].disabled) {
+    CAPACITY.setCustomValidity('Выберите доступное значение!');
+    evt.preventDefault();
+  }
+});
+
+init();
+
 setValidation(TITLEINPUT);
 setValidation(PRICEINPUT);
-
-CAPACITY.addEventListener('invalid', function () {
-  console.log(CAPACITY.validity);
-});
