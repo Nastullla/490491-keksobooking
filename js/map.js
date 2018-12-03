@@ -329,12 +329,12 @@ MAP_PIN_MAIN.addEventListener('mousedown', function (downEvt) {
     if ((endCoords.x >= 0) && (endCoords.x <= MAP.offsetWidth - MAIN_PIN_WIDTH)) {
       startCoords.x = moveEvt.clientX;
       MAP_PIN_MAIN.style.left = endCoords.x + 'px';
-    };
+    }
 
     if ((endCoords.y >= 130 - MAIN_PIN_HEIGHT) && (endCoords.y <= 630 - MAIN_PIN_HEIGHT)) {
       startCoords.y = moveEvt.clientY;
       MAP_PIN_MAIN.style.top = endCoords.y + 'px';
-    };
+    }
   };
 
   var onMouseUp = function (upEvt) {
