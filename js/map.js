@@ -305,50 +305,52 @@ var activateState = function () {
   ADDRESS.disabled = true;
 };
 
+var startCoords = {};
+
+var onMouseMove = function (moveEvt) {
+  moveEvt.preventDefault();
+
+  var shift = {
+    x: moveEvt.clientX - startCoords.x,
+    y: moveEvt.clientY - startCoords.y
+  };
+
+  var endCoords = {
+    x: MAP_PIN_MAIN.offsetLeft + shift.x,
+    y: MAP_PIN_MAIN.offsetTop + shift.y
+  };
+
+  if ((endCoords.x >= 0) && (endCoords.x <= MAP.offsetWidth - MAIN_PIN_WIDTH)) {
+    startCoords.x = moveEvt.clientX;
+    MAP_PIN_MAIN.style.left = endCoords.x + 'px';
+  }
+
+  if ((endCoords.y >= 130 - MAIN_PIN_HEIGHT) && (endCoords.y <= 630 - MAIN_PIN_HEIGHT)) {
+    startCoords.y = moveEvt.clientY;
+    MAP_PIN_MAIN.style.top = endCoords.y + 'px';
+  }
+};
+
+var onMouseUp = function (upEvt) {
+  upEvt.preventDefault();
+
+  document.removeEventListener('mousemove', onMouseMove);
+  document.removeEventListener('mouseup', onMouseUp);
+
+  if (!activeState) {
+    activateState();
+    setPins(allAdvertisements);
+    activeState = true;
+  }
+  setAddress();
+};
+
 MAP_PIN_MAIN.addEventListener('mousedown', function (downEvt) {
   downEvt.preventDefault();
 
-  var startCoords = {
+  startCoords = {
     x: downEvt.clientX,
     y: downEvt.clientY
-  };
-
-  var onMouseMove = function (moveEvt) {
-    moveEvt.preventDefault();
-
-    var shift = {
-      x: moveEvt.clientX - startCoords.x,
-      y: moveEvt.clientY - startCoords.y
-    };
-
-    var endCoords = {
-      x: MAP_PIN_MAIN.offsetLeft + shift.x,
-      y: MAP_PIN_MAIN.offsetTop + shift.y
-    };
-
-    if ((endCoords.x >= 0) && (endCoords.x <= MAP.offsetWidth - MAIN_PIN_WIDTH)) {
-      startCoords.x = moveEvt.clientX;
-      MAP_PIN_MAIN.style.left = endCoords.x + 'px';
-    }
-
-    if ((endCoords.y >= 130 - MAIN_PIN_HEIGHT) && (endCoords.y <= 630 - MAIN_PIN_HEIGHT)) {
-      startCoords.y = moveEvt.clientY;
-      MAP_PIN_MAIN.style.top = endCoords.y + 'px';
-    }
-  };
-
-  var onMouseUp = function (upEvt) {
-    upEvt.preventDefault();
-
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
-
-    if (!activeState) {
-      activateState();
-      setPins(allAdvertisements);
-      activeState = true;
-    }
-    setAddress();
   };
 
   document.addEventListener('mousemove', onMouseMove);
