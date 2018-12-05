@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
 
   var MAIN_PIN_WIDTH = 62;
   var MAIN_PIN_HEIGHT = 84;
@@ -42,15 +42,15 @@
   var getMinPrice = function (typeHouseroom) {
     switch (typeHouseroom) {
       case 'bungalo':
-      return 0;
+        return 0;
       case 'flat':
-      return 1000;
+        return 1000;
       case 'house':
-      return 5000;
+        return 5000;
       case 'palace':
-      return 10000;
+        return 10000;
       default:
-      return 0;
+        return 0;
     }
   };
 
@@ -154,6 +154,6 @@
     activeState: activeState,
     activateState: activateState,
     setAddress: setAddress
-  }
+  };
 
 })();

@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
 
   var MAP_CARD_TEMPLATE = document.querySelector('#card').content.querySelector('.map__card');
 

@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
 
   var MAIN_PIN_WIDTH = 62;
   var MAIN_PIN_HEIGHT = 84;

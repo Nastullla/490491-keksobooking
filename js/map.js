@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
 
   var MAP = document.querySelector('.map');
   var MAP_PINS = MAP.querySelector('.map__pins');
@@ -14,7 +14,7 @@
     }
   };
 
-  document.addEventListener('keydown', function (evt) {
+  document.addEventListener('keydown', function () {
     if (window.utils.isEscKey) {
       closePopup();
     }
@@ -42,7 +42,7 @@
   var setPins = function (advertisements) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < advertisements.length; i++) {
-      var pinElement = window.pin.generatePin(advertisements[i])
+      var pinElement = window.pin.generatePin(advertisements[i]);
       fragment.appendChild(pinElement);
 
       addClickListener(advertisements[i], pinElement);

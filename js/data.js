@@ -1,9 +1,8 @@
 'use strict';
 
-(function() {
+(function () {
 
   var PIN_WIDTH = 50;
-  var PIN_HEIGHT = 70;
 
   var MAP = document.querySelector('.map');
 
@@ -84,6 +83,6 @@
   window.data = {
     generateAdvertisementsList: generateAdvertisementsList,
     allAdvertisements: allAdvertisements
-  }
+  };
 
 })();
