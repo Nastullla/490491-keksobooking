@@ -151,6 +151,7 @@
   });
 
   window.form = {
+    activeState: activeState,
     activateState: activateState,
     setAddress: setAddress
   };
