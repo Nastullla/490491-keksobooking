@@ -44,7 +44,6 @@
     if (!window.form.activeState) {
       window.form.activateState();
       window.map.setPins(window.data.allAdvertisements);
-      window.form.activeState = true;
     }
     window.form.setAddress();
   };

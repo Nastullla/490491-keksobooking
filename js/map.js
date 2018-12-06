@@ -14,12 +14,6 @@
     }
   };
 
-  document.addEventListener('keydown', function () {
-    if (window.utils.isEscKey) {
-      closePopup();
-    }
-  });
-
   var renderAdvertisement = function (advertisement) {
     MAP.insertBefore(window.card.generateAdvertisementElement(advertisement), MAP_FILTERS_CONTAINER);
   };
@@ -50,6 +44,12 @@
 
     MAP_PINS.appendChild(fragment);
   };
+
+  document.addEventListener('keydown', function (evt) {
+    if (window.utils.isEscKey(evt)) {
+      closePopup();
+    }
+  });
 
   window.map = {
     setPins: setPins

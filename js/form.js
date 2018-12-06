@@ -54,19 +54,6 @@
     }
   };
 
-  TYPE.addEventListener('change', function (evt) {
-    PRICE_INPUT.min = getMinPrice(evt.target.value);
-    PRICE_INPUT.placeholder = PRICE_INPUT.min;
-  });
-
-  TIMEIN.addEventListener('change', function (evt) {
-    TIMEOUT.value = evt.target.value;
-  });
-
-  TIMEOUT.addEventListener('change', function (evt) {
-    TIMEIN.value = evt.target.value;
-  });
-
   var setCapacityDependency = function (roomsValue) {
     if (roomsValue === '100') {
       for (var i = 0; i < CAPACITY.length; i++) {
@@ -78,10 +65,6 @@
       }
     }
   };
-
-  ROOMS.addEventListener('change', function (evt) {
-    setCapacityDependency(evt.target.value);
-  });
 
   var init = function () {
     ADDRESS.value = (MAP_PIN_MAIN.offsetLeft + MAIN_PIN_WIDTH / 2) + ', '
@@ -105,6 +88,7 @@
     setDisabled(MAP_FILTERS_INPUTS, false);
     setDisabled(MAP_FILTERS_SELECTS, false);
     ADDRESS.disabled = true;
+    activeState = true;
   };
 
   var setValidation = function (input) {
@@ -134,6 +118,29 @@
     });
   };
 
+  var activeState = false;
+  init();
+
+  setValidation(TITLE_INPUT);
+  setValidation(PRICE_INPUT);
+
+  TYPE.addEventListener('change', function (evt) {
+    PRICE_INPUT.min = getMinPrice(evt.target.value);
+    PRICE_INPUT.placeholder = PRICE_INPUT.min;
+  });
+
+  TIMEIN.addEventListener('change', function (evt) {
+    TIMEOUT.value = evt.target.value;
+  });
+
+  TIMEOUT.addEventListener('change', function (evt) {
+    TIMEIN.value = evt.target.value;
+  });
+
+  ROOMS.addEventListener('change', function (evt) {
+    setCapacityDependency(evt.target.value);
+  });
+
   AD_FORM_SUBMIT.addEventListener('click', function (evt) {
     if (CAPACITY.selectedOptions[0].disabled) {
       CAPACITY.setCustomValidity('Выберите доступное значение!');
@@ -143,15 +150,7 @@
     }
   });
 
-  init();
-
-  setValidation(TITLE_INPUT);
-  setValidation(PRICE_INPUT);
-
-  var activeState = false;
-
   window.form = {
-    activeState: activeState,
     activateState: activateState,
     setAddress: setAddress
   };
