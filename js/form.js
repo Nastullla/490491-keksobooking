@@ -66,9 +66,28 @@
     }
   };
 
+  var removePins = function () {
+    var pins = MAP.querySelectorAll('.map__pin');
+    for (var i = 1; i < pins.length; i++) {
+      pins[i].remove();
+    }
+  };
+
   var init = function () {
+    MAP_PIN_MAIN.style.left = '570px';
+    MAP_PIN_MAIN.style.top = '375px';
+
     ADDRESS.value = (MAP_PIN_MAIN.offsetLeft + MAIN_PIN_WIDTH / 2) + ', '
     + (MAP_PIN_MAIN.offsetTop + MAIN_PIN_WIDTH / 2);
+
+    MAP.classList.add('map--faded');
+    AD_FORM.classList.add('ad-form--disabled');
+
+    if (activeState) {
+      removePins();
+      window.map.closePopup();
+    }
+
     PRICE_INPUT.min = getMinPrice(TYPE.value);
     PRICE_INPUT.placeholder = PRICE_INPUT.min;
     TIMEOUT.value = TIMEIN.value;
@@ -78,6 +97,7 @@
     setDisabled(AD_FORM_SELECTS, true);
     setDisabled(MAP_FILTERS_INPUTS, true);
     setDisabled(MAP_FILTERS_SELECTS, true);
+    activeState = false;
   };
 
   var activateState = function () {
@@ -87,7 +107,7 @@
     setDisabled(AD_FORM_SELECTS, false);
     setDisabled(MAP_FILTERS_INPUTS, false);
     setDisabled(MAP_FILTERS_SELECTS, false);
-    ADDRESS.disabled = true;
+    // ADDRESS.disabled = true;
     activeState = true;
   };
 
@@ -148,6 +168,21 @@
     } else {
       CAPACITY.setCustomValidity('');
     }
+  });
+
+  var onSuccessSave = function () {
+    AD_FORM.reset();
+    window.utils.onSuccess();
+  };
+
+  AD_FORM.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(AD_FORM), onSuccessSave, window.utils.onError);
+    evt.preventDefault();
+
+  });
+
+  AD_FORM.addEventListener('reset', function () {
+    init();
   });
 
   window.form = {

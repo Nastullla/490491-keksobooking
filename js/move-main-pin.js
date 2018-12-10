@@ -43,7 +43,7 @@
 
     if (!window.form.activeState) {
       window.form.activateState();
-      window.map.setPins(window.data.allAdvertisements);
+      window.map.setPins(window.data.advertisements);
     }
     window.form.setAddress();
   };
