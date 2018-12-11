@@ -72,7 +72,6 @@
       featuresElement.remove();
     } else {
       renderFeatures(advertisementElement, advertisement.offer.features);
-      advertisementElement.querySelector('.popup__description').textContent = advertisement.offer.description;
     }
 
     if (advertisement.offer.photos.length === 0) {
@@ -82,6 +81,7 @@
       renderPhotosList(advertisementElement, advertisement.offer.photos);
     }
 
+    advertisementElement.querySelector('.popup__description').textContent = advertisement.offer.description;
     advertisementElement.querySelector('.popup__avatar').src = advertisement.author.avatar;
 
     return advertisementElement;

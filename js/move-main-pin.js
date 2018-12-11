@@ -35,6 +35,10 @@
     }
   };
 
+  var onSuccessLoad = function (data) {
+    window.map.setPins(data);
+  };
+
   var onMouseUp = function (upEvt) {
     upEvt.preventDefault();
 
@@ -43,7 +47,7 @@
 
     if (!window.form.activeState) {
       window.form.activateState();
-      window.map.setPins(window.data.advertisements);
+      window.backend.load(onSuccessLoad, window.utils.onError);
     }
     window.form.setAddress();
   };

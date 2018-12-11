@@ -38,22 +38,33 @@
     errorElement.querySelector('.error__message').textContent = errorMessage;
     errorElement.classList.remove('hidden');
 
-    var onClick = function () {
+    var errorButton = errorElement.querySelector('.error__button');
+
+    var closeErrorMessage = function () {
       errorElement.classList.add('hidden');
       errorElement.removeEventListener('click', onClick);
       document.removeEventListener('keydown', onKeyDown);
+      errorButton.removeEventListener('click', onClickErrorButton);
+    };
+
+    var onClick = function () {
+      closeErrorMessage();
     };
 
     var onKeyDown = function (evt) {
       if (isEscKey(evt)) {
-        errorElement.classList.add('hidden');
-        errorElement.removeEventListener('click', onClick);
-        document.removeEventListener('keydown', onKeyDown);
+        closeErrorMessage();
       }
+    };
+
+    var onClickErrorButton = function () {
+      closeErrorMessage();
+      window.backend.save(new FormData(window.form.AD_FORM), window.form.onSuccessSave, window.utils.onError);
     };
 
     errorElement.addEventListener('click', onClick);
     document.addEventListener('keydown', onKeyDown);
+    errorButton.addEventListener('click', onClickErrorButton);
   };
 
   var onSuccess = function () {

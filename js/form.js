@@ -10,6 +10,7 @@
   var AD_FORM_INPUTS = AD_FORM.querySelectorAll('input');
   var AD_FORM_SELECTS = AD_FORM.querySelectorAll('select');
   var AD_FORM_SUBMIT = AD_FORM.querySelector('.ad-form__submit');
+  var AD_FORM_RESET = AD_FORM.querySelector('.ad-form__reset');
 
   var MAP_FILTERS = MAP.querySelector('.map__filters');
   var MAP_FILTERS_INPUTS = MAP_FILTERS.querySelectorAll('input');
@@ -107,7 +108,7 @@
     setDisabled(AD_FORM_SELECTS, false);
     setDisabled(MAP_FILTERS_INPUTS, false);
     setDisabled(MAP_FILTERS_SELECTS, false);
-    // ADDRESS.disabled = true;
+    ADDRESS.readOnly = true;
     activeState = true;
   };
 
@@ -172,23 +173,27 @@
 
   var onSuccessSave = function () {
     AD_FORM.reset();
+    init();
     window.utils.onSuccess();
   };
 
   AD_FORM.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(AD_FORM), onSuccessSave, window.utils.onError);
     evt.preventDefault();
-
   });
 
-  AD_FORM.addEventListener('reset', function () {
+  AD_FORM_RESET.addEventListener('click', function (evt) {
+    AD_FORM.reset();
     init();
+    evt.preventDefault();
   });
 
   window.form = {
     activeState: activeState,
     activateState: activateState,
-    setAddress: setAddress
+    setAddress: setAddress,
+    AD_FORM: AD_FORM,
+    onSuccessSave: onSuccessSave
   };
 
 })();
