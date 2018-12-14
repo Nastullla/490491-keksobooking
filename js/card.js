@@ -15,74 +15,110 @@
       case 'palace':
         return 'Дворец';
       default:
-        return 'Нейзвестный тип';
+        return null;
     }
   };
 
   var renderPhotosList = function (advertisementElement, advertisementPhotos) {
     var popupPhotos = advertisementElement.querySelector('.popup__photos');
     var popupPhoto = popupPhotos.querySelector('.popup__photo');
-    var fragmentPhotos = document.createDocumentFragment();
 
-    for (var i = 0; i < advertisementPhotos.length; i++) {
-      var photoElement = popupPhoto.cloneNode(true);
-      photoElement.src = advertisementPhotos[i];
-      fragmentPhotos.appendChild(photoElement);
+    if (advertisementPhotos.length) {
+      var fragmentPhotos = document.createDocumentFragment();
+
+      for (var i = 0; i < advertisementPhotos.length; i++) {
+        var photoElement = popupPhoto.cloneNode(true);
+        photoElement.src = advertisementPhotos[i];
+        fragmentPhotos.appendChild(photoElement);
+      }
+
+      while (popupPhotos.firstChild) {
+        popupPhotos.firstChild.remove();
+      }
+
+      popupPhotos.appendChild(fragmentPhotos);
+    } else {
+      popupPhotos.remove();
     }
 
-    while (popupPhotos.firstChild) {
-      popupPhotos.firstChild.remove();
-    }
-
-    popupPhotos.appendChild(fragmentPhotos);
   };
 
   var renderFeatures = function (advertisementElement, advertisementFeatures) {
     var popupFeatures = advertisementElement.querySelector('.popup__features');
-    while (popupFeatures.firstChild) {
-      popupFeatures.firstChild.remove();
-    }
 
-    var fragmentFeatures = document.createDocumentFragment();
-    for (var i = 0; i < advertisementFeatures.length; i++) {
-      var featureElement = document.createElement('li');
-      featureElement.classList.add('popup__feature');
-      featureElement.classList.add('popup__feature--' + advertisementFeatures[i]);
-      fragmentFeatures.appendChild(featureElement);
-    }
+    if (advertisementFeatures.length) {
+      while (popupFeatures.firstChild) {
+        popupFeatures.firstChild.remove();
+      }
 
-    popupFeatures.appendChild(fragmentFeatures);
+      var fragmentFeatures = document.createDocumentFragment();
+      for (var i = 0; i < advertisementFeatures.length; i++) {
+        var featureElement = document.createElement('li');
+        featureElement.classList.add('popup__feature');
+        featureElement.classList.add('popup__feature--' + advertisementFeatures[i]);
+        fragmentFeatures.appendChild(featureElement);
+      }
+
+      popupFeatures.appendChild(fragmentFeatures);
+    } else {
+      popupFeatures.remove();
+    }
+  };
+
+  var checkDataAvailability = function (advertisement, element, value) {
+    if (value) {
+      advertisement.querySelector(element).textContent = value;
+    } else {
+      advertisement.querySelector(element).remove();
+    }
   };
 
   var generateAdvertisementElement = function (advertisement) {
+    var Data = [
+      {
+        element: '.popup__title',
+        value: advertisement.offer.title
+      },
+      {
+        element: '.popup__text--address',
+        value: advertisement.offer.address
+      },
+      {
+        element: '.popup__text--price',
+        value: advertisement.offer.price ? advertisement.offer.price + '₽/ночь' : null
+      },
+      {
+        element: '.popup__text--capacity',
+        value: advertisement.offer.rooms && advertisement.offer.guests ? advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостей' : null
+      },
+      {
+        element: '.popup__text--time',
+        value: advertisement.offer.checkin && advertisement.offer.checkout ? 'Заезд после ' + advertisement.offer.checkin + ', выезд до ' + advertisement.offer.checkout : null
+      },
+      {
+        element: '.popup__description',
+        value: advertisement.offer.description
+      },
+      {
+        element: '.popup__type',
+        value: getAdvertisementType(advertisement.offer.type)
+      },
+    ];
+
     var advertisementElement = MAP_CARD_TEMPLATE.cloneNode(true);
-    advertisementElement.querySelector('.popup__title').textContent = advertisement.offer.title;
-    advertisementElement.querySelector('.popup__text--address').textContent = advertisement.offer.address;
-    advertisementElement.querySelector('.popup__text--price').textContent = advertisement.offer.price + '₽/ночь';
-    advertisementElement.querySelector('.popup__type').textContent = getAdvertisementType(advertisement.offer.type);
 
-    var advertisementCapacity = advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостей';
-    advertisementElement.querySelector('.popup__text--capacity').textContent = advertisementCapacity;
-
-    var advertisementTime = 'Заезд после ' + advertisement.offer.checkin + ', выезд до ' + advertisement.offer.checkout;
-    advertisementElement.querySelector('.popup__text--time').textContent = advertisementTime;
-
-    if (advertisement.offer.features.length === 0) {
-      var featuresElement = advertisementElement.querySelector('.popup__features');
-      featuresElement.remove();
-    } else {
-      renderFeatures(advertisementElement, advertisement.offer.features);
+    for (var i = 0; i < Data.length; i++) {
+      checkDataAvailability(advertisementElement, Data[i].element, Data[i].value);
     }
 
-    if (advertisement.offer.photos.length === 0) {
-      var popupPhotos = advertisementElement.querySelector('.popup__photos');
-      popupPhotos.remove();
-    } else {
-      renderPhotosList(advertisementElement, advertisement.offer.photos);
-    }
+    renderFeatures(advertisementElement, advertisement.offer.features);
+    renderPhotosList(advertisementElement, advertisement.offer.photos);
 
-    advertisementElement.querySelector('.popup__description').textContent = advertisement.offer.description;
-    advertisementElement.querySelector('.popup__avatar').src = advertisement.author.avatar;
+    if (advertisement.author.avatar) {
+      advertisementElement.querySelector('.popup__avatar').src = advertisement.author.avatar;
+    } else {
+      advertisementElement.querySelector('.popup__avatar').remove();
+    }
 
     return advertisementElement;
   };

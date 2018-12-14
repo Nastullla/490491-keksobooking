@@ -36,7 +36,10 @@
   };
 
   var onSuccessLoad = function (data) {
-    window.map.setPins(data);
+    var correctDate = data.filter(function (element) {
+      return element.offer;
+    });
+    window.map.setPins(correctDate);
   };
 
   var onMouseUp = function (upEvt) {

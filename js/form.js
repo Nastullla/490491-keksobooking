@@ -67,13 +67,6 @@
     }
   };
 
-  var removePins = function () {
-    var pins = MAP.querySelectorAll('.map__pin');
-    for (var i = 1; i < pins.length; i++) {
-      pins[i].remove();
-    }
-  };
-
   var init = function () {
     MAP_PIN_MAIN.style.left = '570px';
     MAP_PIN_MAIN.style.top = '375px';
@@ -85,7 +78,7 @@
     AD_FORM.classList.add('ad-form--disabled');
 
     if (activeState) {
-      removePins();
+      window.pin.removePins();
       window.map.closePopup();
     }
 
@@ -177,8 +170,16 @@
     window.utils.onSuccess();
   };
 
+  var onErrorForm = function (errorText) {
+    window.utils.onError(errorText, save);
+  };
+
+  var save = function () {
+    window.backend.save(new FormData(AD_FORM), onSuccessSave, onErrorForm);
+  };
+
   AD_FORM.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(AD_FORM), onSuccessSave, window.utils.onError);
+    save();
     evt.preventDefault();
   });
 
@@ -191,9 +192,7 @@
   window.form = {
     activeState: activeState,
     activateState: activateState,
-    setAddress: setAddress,
-    AD_FORM: AD_FORM,
-    onSuccessSave: onSuccessSave
+    setAddress: setAddress
   };
 
 })();

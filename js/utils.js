@@ -33,7 +33,7 @@
     return messageElement;
   };
 
-  var onError = function (errorMessage) {
+  var onError = function (errorMessage, onClickButton) {
     var errorElement = getMessageElement('error', 'error');
     errorElement.querySelector('.error__message').textContent = errorMessage;
     errorElement.classList.remove('hidden');
@@ -59,7 +59,9 @@
 
     var onClickErrorButton = function () {
       closeErrorMessage();
-      window.backend.save(new FormData(window.form.AD_FORM), window.form.onSuccessSave, window.utils.onError);
+      if (onClickButton) {
+        onClickButton();
+      }
     };
 
     errorElement.addEventListener('click', onClick);
