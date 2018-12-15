@@ -35,6 +35,13 @@
     }
   };
 
+  var onSuccessLoad = function (data) {
+    var correctDate = data.filter(function (element) {
+      return element.offer;
+    });
+    window.map.setPins(correctDate);
+  };
+
   var onMouseUp = function (upEvt) {
     upEvt.preventDefault();
 
@@ -43,7 +50,7 @@
 
     if (!window.form.activeState) {
       window.form.activateState();
-      window.map.setPins(window.data.allAdvertisements);
+      window.backend.load(onSuccessLoad, window.utils.onError);
     }
     window.form.setAddress();
   };

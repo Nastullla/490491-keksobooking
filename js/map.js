@@ -7,10 +7,18 @@
   var MAP_FILTERS_CONTAINER = MAP.querySelector('.map__filters-container');
 
   var closePopup = function () {
+    hideActivePin();
     var popup = MAP.querySelector('.popup');
 
     if (popup) {
       popup.remove();
+    }
+  };
+
+  var hideActivePin = function () {
+    var pinActive = MAP_PINS.querySelector('.map__pin--active');
+    if (pinActive) {
+      pinActive.classList.remove('map__pin--active');
     }
   };
 
@@ -23,6 +31,8 @@
       closePopup();
 
       renderAdvertisement(advertisement);
+
+      pinElement.classList.add('map__pin--active');
 
       var popup = MAP.querySelector('.popup');
       var popupClose = popup.querySelector('.popup__close');
@@ -52,7 +62,8 @@
   });
 
   window.map = {
-    setPins: setPins
+    setPins: setPins,
+    closePopup: closePopup
   };
 
 })();

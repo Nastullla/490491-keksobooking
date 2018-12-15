@@ -4,6 +4,7 @@
 
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
+  var MAP = document.querySelector('.map');
   var MAP_PIN_TEMPLATE = document.querySelector('#pin').content.querySelector('.map__pin');
 
   var generatePin = function (advertisement) {
@@ -18,8 +19,16 @@
     return pinElement;
   };
 
+  var removePins = function () {
+    var pins = MAP.querySelectorAll('.map__pin');
+    for (var i = 1; i < pins.length; i++) {
+      pins[i].remove();
+    }
+  };
+
   window.pin = {
-    generatePin: generatePin
+    generatePin: generatePin,
+    removePins: removePins
   };
 
 
