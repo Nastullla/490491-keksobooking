@@ -45,7 +45,9 @@
 
   var setPins = function (advertisements) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < advertisements.length; i++) {
+    var countPins = advertisements.length < 5 ? advertisements.length : 5;
+
+    for (var i = 0; i < countPins; i++) {
       var pinElement = window.pin.generatePin(advertisements[i]);
       fragment.appendChild(pinElement);
 

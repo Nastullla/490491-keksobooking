@@ -36,10 +36,10 @@
   };
 
   var onSuccessLoad = function (data) {
-    var correctDate = data.filter(function (element) {
+    window.moveMailPin.correctDate = data.filter(function (element) {
       return element.offer;
     });
-    window.map.setPins(correctDate);
+    window.map.setPins(window.moveMailPin.correctDate);
   };
 
   var onMouseUp = function (upEvt) {
@@ -66,5 +66,9 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
+  window.moveMailPin = {
+
+  };
 
 })();

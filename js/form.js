@@ -77,7 +77,7 @@
     MAP.classList.add('map--faded');
     AD_FORM.classList.add('ad-form--disabled');
 
-    if (activeState) {
+    if (window.form.activeState) {
       window.pin.removePins();
       window.map.closePopup();
     }
@@ -91,7 +91,7 @@
     setDisabled(AD_FORM_SELECTS, true);
     setDisabled(MAP_FILTERS_INPUTS, true);
     setDisabled(MAP_FILTERS_SELECTS, true);
-    activeState = false;
+    window.form.activeState = false;
   };
 
   var activateState = function () {
@@ -102,7 +102,7 @@
     setDisabled(MAP_FILTERS_INPUTS, false);
     setDisabled(MAP_FILTERS_SELECTS, false);
     ADDRESS.readOnly = true;
-    activeState = true;
+    window.form.activeState = true;
   };
 
   var setValidation = function (input) {
@@ -131,12 +131,6 @@
       }
     });
   };
-
-  var activeState = false;
-  init();
-
-  setValidation(TITLE_INPUT);
-  setValidation(PRICE_INPUT);
 
   TYPE.addEventListener('change', function (evt) {
     PRICE_INPUT.min = getMinPrice(evt.target.value);
@@ -190,9 +184,14 @@
   });
 
   window.form = {
-    activeState: activeState,
+    activeState: false,
     activateState: activateState,
     setAddress: setAddress
   };
+
+  init();
+
+  setValidation(TITLE_INPUT);
+  setValidation(PRICE_INPUT);
 
 })();
