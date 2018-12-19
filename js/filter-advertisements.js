@@ -3,23 +3,25 @@
 (function () {
 
   var ANY_FILTER_VALUE = 'any';
+  var PRICE_LOW_LIMIT = 10000;
+  var PRICE_HIGH_LIMIT = 50000;
 
   var filterPrice = function (price, filterPriceValue) {
     switch (filterPriceValue) {
       case 'low':
-        return price < 10000;
+        return price < PRICE_LOW_LIMIT;
       case 'middle':
-        return price >= 10000 && price < 50000;
+        return price >= PRICE_LOW_LIMIT && price < PRICE_HIGH_LIMIT;
       case 'high':
-        return price >= 50000;
+        return price >= PRICE_HIGH_LIMIT;
       default:
         return true;
     }
   };
 
-  var filterFeatures = function (features, filterFeaturesValue) {
-    for (var i = 0; i < filterFeaturesValue.length; i++) {
-      if (features.indexOf(filterFeaturesValue[i]) === -1) {
+  var filterFeatures = function (features, filterFeaturesValues) {
+    for (var i = 0; i < filterFeaturesValues.length; i++) {
+      if (features.indexOf(filterFeaturesValues[i]) === -1) {
         return false;
       }
     }

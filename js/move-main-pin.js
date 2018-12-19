@@ -36,10 +36,10 @@
   };
 
   var onSuccessLoad = function (data) {
-    window.moveMailPin.correctDate = data.filter(function (element) {
+    window.moveMainPin.correctData = data.filter(function (element) {
       return element.offer;
     });
-    window.map.setPins(window.moveMailPin.correctDate);
+    window.map.setPins(window.moveMainPin.correctData);
   };
 
   var onMouseUp = function (upEvt) {
@@ -67,8 +67,8 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  window.moveMailPin = {
-
+  window.moveMainPin = {
+    correctData: []
   };
 
 })();

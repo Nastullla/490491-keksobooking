@@ -6,6 +6,8 @@
   var MAP_PINS = MAP.querySelector('.map__pins');
   var MAP_FILTERS_CONTAINER = MAP.querySelector('.map__filters-container');
 
+  var MAX_PINS_COUNT = 5;
+
   var closePopup = function () {
     hideActivePin();
     var popup = MAP.querySelector('.popup');
@@ -45,7 +47,7 @@
 
   var setPins = function (advertisements) {
     var fragment = document.createDocumentFragment();
-    var countPins = advertisements.length < 5 ? advertisements.length : 5;
+    var countPins = advertisements.length < MAX_PINS_COUNT ? advertisements.length : MAX_PINS_COUNT;
 
     for (var i = 0; i < countPins; i++) {
       var pinElement = window.pin.generatePin(advertisements[i]);

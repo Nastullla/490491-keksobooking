@@ -10,26 +10,31 @@
   var GUESTS = FILTERS_FORM.querySelector('select[name = housing-guests]');
   var FEATURES = FILTERS_FORM.querySelectorAll('input[name = features]');
 
-  var setFilteredPins = function () {
-    window.pin.removePins();
-    window.map.closePopup();
-
+  var getSelectFeatures = function () {
     var selectFeatures = [];
+
     FEATURES.forEach(function (element) {
       if (element.checked) {
         selectFeatures.push(element.value);
       }
     });
 
-    var FiltersValue = {
+    return selectFeatures;
+  };
+
+  var setFilteredPins = function () {
+    window.pin.removePins();
+    window.map.closePopup();
+
+    var filtersValue = {
       type: TYPE.value,
       price: PRICE.value,
       rooms: ROOMS.value,
       guests: GUESTS.value,
-      features: selectFeatures
+      features: getSelectFeatures()
     };
 
-    window.map.setPins(window.filterAdvertisements.filterAdvertisements(window.moveMailPin.correctDate, FiltersValue));
+    window.map.setPins(window.filterAdvertisements.filterAdvertisements(window.moveMainPin.correctData, filtersValue));
   };
 
   var debouncedSetFilteredPins = window.utils.debounce(setFilteredPins);

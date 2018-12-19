@@ -5,6 +5,11 @@
   var MAIN_PIN_WIDTH = 62;
   var MAIN_PIN_HEIGHT = 84;
 
+  var STARTING_COORDINATE = {
+    x: '570px',
+    y: '375px'
+  };
+
   var MAP = document.querySelector('.map');
   var AD_FORM = document.querySelector('.ad-form');
   var AD_FORM_INPUTS = AD_FORM.querySelectorAll('input');
@@ -68,8 +73,8 @@
   };
 
   var init = function () {
-    MAP_PIN_MAIN.style.left = '570px';
-    MAP_PIN_MAIN.style.top = '375px';
+    MAP_PIN_MAIN.style.left = STARTING_COORDINATE.x;
+    MAP_PIN_MAIN.style.top = STARTING_COORDINATE.y;
 
     ADDRESS.value = (MAP_PIN_MAIN.offsetLeft + MAIN_PIN_WIDTH / 2) + ', '
     + (MAP_PIN_MAIN.offsetTop + MAIN_PIN_WIDTH / 2);

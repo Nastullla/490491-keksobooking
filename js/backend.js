@@ -2,6 +2,8 @@
 
 (function () {
 
+  var REQUEST_TIMEOUT = 10000; // 10 секунд
+
   var performRequest = function (url, method, onLoad, onError, data) {
     var xhr = new XMLHttpRequest();
 
@@ -23,7 +25,7 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000; // 10 секунд
+    xhr.timeout = REQUEST_TIMEOUT;
 
     xhr.open(method, url);
 
