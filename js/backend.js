@@ -8,13 +8,10 @@
     switch (status) {
       case 400:
         return 'Неверный запрос';
-        break;
       case 404:
         return 'Ничего не найдено';
-        break;
       case 500:
         return 'Ошибка сервера';
-        break;
       default:
         return 'Статус ответа: ' + status + ' ' + statusText;
     }
