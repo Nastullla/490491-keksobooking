@@ -2,20 +2,14 @@
 
 (function () {
 
-  var keyCodes = {
+  var DEBOUNCE_INTERVAL = 500;
+
+  var KeyCode = {
     esc: 27
   };
 
   var isEscKey = function (evt) {
-    return evt.keyCode === keyCodes.esc;
-  };
-
-  var selectRandomItem = function (array) {
-    return array[Math.floor(Math.random() * array.length)];
-  };
-
-  var getRandomNumberFromRange = function (firstValue, lastValue) {
-    return Math.floor(Math.random() * (lastValue - firstValue + 1)) + firstValue;
+    return evt.keyCode === KeyCode.esc;
   };
 
   var createMessageElement = function (id, selector) {
@@ -91,13 +85,26 @@
     document.addEventListener('keydown', onKeyDown);
   };
 
+  var debounce = function (cb) {
+    var lastTimeout = null;
+
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
+
   window.utils = {
-    keyCode: keyCodes,
+    KeyCode: KeyCode,
     isEscKey: isEscKey,
-    selectRandomItem: selectRandomItem,
-    getRandomNumberFromRange: getRandomNumberFromRange,
     onError: onError,
-    onSuccess: onSuccess
+    onSuccess: onSuccess,
+    debounce: debounce
   };
 
 })();

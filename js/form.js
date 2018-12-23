@@ -5,6 +5,11 @@
   var MAIN_PIN_WIDTH = 62;
   var MAIN_PIN_HEIGHT = 84;
 
+  var STARTING_COORDINATE = {
+    x: '570px',
+    y: '375px'
+  };
+
   var MAP = document.querySelector('.map');
   var AD_FORM = document.querySelector('.ad-form');
   var AD_FORM_INPUTS = AD_FORM.querySelectorAll('input');
@@ -68,8 +73,8 @@
   };
 
   var init = function () {
-    MAP_PIN_MAIN.style.left = '570px';
-    MAP_PIN_MAIN.style.top = '375px';
+    MAP_PIN_MAIN.style.left = STARTING_COORDINATE.x;
+    MAP_PIN_MAIN.style.top = STARTING_COORDINATE.y;
 
     ADDRESS.value = (MAP_PIN_MAIN.offsetLeft + MAIN_PIN_WIDTH / 2) + ', '
     + (MAP_PIN_MAIN.offsetTop + MAIN_PIN_WIDTH / 2);
@@ -77,7 +82,7 @@
     MAP.classList.add('map--faded');
     AD_FORM.classList.add('ad-form--disabled');
 
-    if (activeState) {
+    if (window.form.activeState) {
       window.pin.removePins();
       window.map.closePopup();
     }
@@ -91,7 +96,7 @@
     setDisabled(AD_FORM_SELECTS, true);
     setDisabled(MAP_FILTERS_INPUTS, true);
     setDisabled(MAP_FILTERS_SELECTS, true);
-    activeState = false;
+    window.form.activeState = false;
   };
 
   var activateState = function () {
@@ -102,7 +107,7 @@
     setDisabled(MAP_FILTERS_INPUTS, false);
     setDisabled(MAP_FILTERS_SELECTS, false);
     ADDRESS.readOnly = true;
-    activeState = true;
+    window.form.activeState = true;
   };
 
   var setValidation = function (input) {
@@ -131,12 +136,6 @@
       }
     });
   };
-
-  var activeState = false;
-  init();
-
-  setValidation(TITLE_INPUT);
-  setValidation(PRICE_INPUT);
 
   TYPE.addEventListener('change', function (evt) {
     PRICE_INPUT.min = getMinPrice(evt.target.value);
@@ -190,9 +189,14 @@
   });
 
   window.form = {
-    activeState: activeState,
+    activeState: false,
     activateState: activateState,
     setAddress: setAddress
   };
+
+  init();
+
+  setValidation(TITLE_INPUT);
+  setValidation(PRICE_INPUT);
 
 })();

@@ -4,19 +4,11 @@
 
   var MAP_CARD_TEMPLATE = document.querySelector('#card').content.querySelector('.map__card');
 
-  var getAdvertisementType = function (advertisementType) {
-    switch (advertisementType) {
-      case 'flat':
-        return 'Квартира';
-      case 'bungalo':
-        return 'Бунгало';
-      case 'house':
-        return 'Дом';
-      case 'palace':
-        return 'Дворец';
-      default:
-        return null;
-    }
+  var typeAdvertisemenMap = {
+    'flat': 'Квартира',
+    'bungalo': 'Бунгало',
+    'house': 'Дом',
+    'palace': 'Дворец'
   };
 
   var renderPhotosList = function (advertisementElement, advertisementPhotos) {
@@ -65,16 +57,16 @@
     }
   };
 
-  var checkDataAvailability = function (advertisement, element, value) {
+  var checkDataAvailability = function (advertisementElement, element, value) {
     if (value) {
-      advertisement.querySelector(element).textContent = value;
+      advertisementElement.querySelector(element).textContent = value;
     } else {
-      advertisement.querySelector(element).remove();
+      advertisementElement.querySelector(element).remove();
     }
   };
 
   var generateAdvertisementElement = function (advertisement) {
-    var Data = [
+    var dataAvailability = [
       {
         element: '.popup__title',
         value: advertisement.offer.title
@@ -101,14 +93,14 @@
       },
       {
         element: '.popup__type',
-        value: getAdvertisementType(advertisement.offer.type)
+        value: typeAdvertisemenMap[advertisement.offer.type]
       },
     ];
 
     var advertisementElement = MAP_CARD_TEMPLATE.cloneNode(true);
 
-    for (var i = 0; i < Data.length; i++) {
-      checkDataAvailability(advertisementElement, Data[i].element, Data[i].value);
+    for (var i = 0; i < dataAvailability.length; i++) {
+      checkDataAvailability(advertisementElement, dataAvailability[i].element, dataAvailability[i].value);
     }
 
     renderFeatures(advertisementElement, advertisement.offer.features);
