@@ -2,14 +2,14 @@
 
 (function () {
 
-  var mapCardTemplateElement = document.querySelector('#card').content.querySelector('.map__card');
-
   var TypeAdvertisemenMap = {
-    'flat': 'Квартира',
-    'bungalo': 'Бунгало',
-    'house': 'Дом',
-    'palace': 'Дворец'
+    'FLAT': 'Квартира',
+    'BUNGALO': 'Бунгало',
+    'HOUSE': 'Дом',
+    'PALACE': 'Дворец'
   };
+
+  var mapCardTemplateElement = document.querySelector('#card').content.querySelector('.map__card');
 
   var getDataAvailability = function (advertisement) {
     return [
@@ -39,7 +39,7 @@
       },
       {
         element: '.popup__type',
-        value: TypeAdvertisemenMap[advertisement.offer.type]
+        value: advertisement.offer.type ? TypeAdvertisemenMap[advertisement.offer.type.toUpperCase()] : null
       },
     ];
   };

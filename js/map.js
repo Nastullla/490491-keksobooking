@@ -2,11 +2,11 @@
 
 (function () {
 
+  var MAX_PINS_COUNT = 5;
+
   var mapElement = document.querySelector('.map');
   var mapPinsElement = mapElement.querySelector('.map__pins');
   var mapFiltersContainerElement = mapElement.querySelector('.map__filters-container');
-
-  var MAX_PINS_COUNT = 5;
 
   var closePopup = function () {
     hideActivePin();
