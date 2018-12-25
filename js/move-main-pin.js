@@ -4,10 +4,11 @@
 
   var MAIN_PIN_WIDTH = 62;
   var MAIN_PIN_HEIGHT = 84;
+  var MIN_Y = 130;
+  var MAX_Y = 630;
 
-  var MAP = document.querySelector('.map');
-  var MAP_PINS = MAP.querySelector('.map__pins');
-  var MAP_PIN_MAIN = MAP_PINS.querySelector('.map__pin--main');
+  var mapElement = document.querySelector('.map');
+  var mapPinMainElement = mapElement.querySelector('.map__pin--main');
 
   var startCoords = {};
 
@@ -20,26 +21,27 @@
     };
 
     var endCoords = {
-      x: MAP_PIN_MAIN.offsetLeft + shift.x,
-      y: MAP_PIN_MAIN.offsetTop + shift.y
+      x: mapPinMainElement.offsetLeft + shift.x,
+      y: mapPinMainElement.offsetTop + shift.y
     };
 
-    if ((endCoords.x >= 0) && (endCoords.x <= MAP.offsetWidth - MAIN_PIN_WIDTH)) {
+    if ((endCoords.x >= 0) && (endCoords.x <= mapElement.offsetWidth - MAIN_PIN_WIDTH)) {
       startCoords.x = moveEvt.clientX;
-      MAP_PIN_MAIN.style.left = endCoords.x + 'px';
+      mapPinMainElement.style.left = endCoords.x + 'px';
     }
 
-    if ((endCoords.y >= 130 - MAIN_PIN_HEIGHT) && (endCoords.y <= 630 - MAIN_PIN_HEIGHT)) {
+    if ((endCoords.y >= MIN_Y - MAIN_PIN_HEIGHT) && (endCoords.y <= MAX_Y - MAIN_PIN_HEIGHT)) {
       startCoords.y = moveEvt.clientY;
-      MAP_PIN_MAIN.style.top = endCoords.y + 'px';
+      mapPinMainElement.style.top = endCoords.y + 'px';
     }
   };
 
-  var onSuccessLoad = function (data) {
-    window.moveMainPin.correctData = data.filter(function (element) {
-      return element.offer;
-    });
-    window.map.setPins(window.moveMainPin.correctData);
+  var onErrorLoad = function (errorText) {
+    window.utils.onError(errorText, load);
+  };
+
+  var load = function () {
+    window.backend.load(window.data.onSuccessLoad, onErrorLoad);
   };
 
   var onMouseUp = function (upEvt) {
@@ -50,12 +52,12 @@
 
     if (!window.form.activeState) {
       window.form.activateState();
-      window.backend.load(onSuccessLoad, window.utils.onError);
+      load();
     }
     window.form.setAddress();
   };
 
-  MAP_PIN_MAIN.addEventListener('mousedown', function (downEvt) {
+  mapPinMainElement.addEventListener('mousedown', function (downEvt) {
     downEvt.preventDefault();
 
     startCoords = {
@@ -66,9 +68,5 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
-
-  window.moveMainPin = {
-    correctData: []
-  };
 
 })();

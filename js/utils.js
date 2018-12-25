@@ -5,16 +5,16 @@
   var DEBOUNCE_INTERVAL = 500;
 
   var KeyCode = {
-    esc: 27
+    ESC: 27
   };
 
   var isEscKey = function (evt) {
-    return evt.keyCode === KeyCode.esc;
+    return evt.keyCode === KeyCode.ESC;
   };
 
   var createMessageElement = function (id, selector) {
-    var messageTemplate = document.querySelector('#' + id).content.querySelector('.' + selector);
-    var message = messageTemplate.cloneNode(true);
+    var messageTemplateElement = document.querySelector('#' + id).content.querySelector('.' + selector);
+    var message = messageTemplateElement.cloneNode(true);
     document.body.insertAdjacentElement('afterbegin', message);
     return message;
   };
@@ -32,13 +32,13 @@
     errorElement.querySelector('.error__message').textContent = errorMessage;
     errorElement.classList.remove('hidden');
 
-    var errorButton = errorElement.querySelector('.error__button');
+    var errorButtonElement = errorElement.querySelector('.error__button');
 
     var closeErrorMessage = function () {
       errorElement.classList.add('hidden');
       errorElement.removeEventListener('click', onClick);
       document.removeEventListener('keydown', onKeyDown);
-      errorButton.removeEventListener('click', onClickErrorButton);
+      errorButtonElement.removeEventListener('click', onClickErrorButton);
     };
 
     var onClick = function () {
@@ -60,7 +60,7 @@
 
     errorElement.addEventListener('click', onClick);
     document.addEventListener('keydown', onKeyDown);
-    errorButton.addEventListener('click', onClickErrorButton);
+    errorButtonElement.addEventListener('click', onClickErrorButton);
   };
 
   var onSuccess = function () {
@@ -100,7 +100,6 @@
   };
 
   window.utils = {
-    KeyCode: KeyCode,
     isEscKey: isEscKey,
     onError: onError,
     onSuccess: onSuccess,

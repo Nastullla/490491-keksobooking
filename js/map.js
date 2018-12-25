@@ -2,30 +2,30 @@
 
 (function () {
 
-  var MAP = document.querySelector('.map');
-  var MAP_PINS = MAP.querySelector('.map__pins');
-  var MAP_FILTERS_CONTAINER = MAP.querySelector('.map__filters-container');
-
   var MAX_PINS_COUNT = 5;
+
+  var mapElement = document.querySelector('.map');
+  var mapPinsElement = mapElement.querySelector('.map__pins');
+  var mapFiltersContainerElement = mapElement.querySelector('.map__filters-container');
 
   var closePopup = function () {
     hideActivePin();
-    var popup = MAP.querySelector('.popup');
+    var popupElement = mapElement.querySelector('.popup');
 
-    if (popup) {
-      popup.remove();
+    if (popupElement) {
+      popupElement.remove();
     }
   };
 
   var hideActivePin = function () {
-    var pinActive = MAP_PINS.querySelector('.map__pin--active');
-    if (pinActive) {
-      pinActive.classList.remove('map__pin--active');
+    var pinActiveElement = mapPinsElement.querySelector('.map__pin--active');
+    if (pinActiveElement) {
+      pinActiveElement.classList.remove('map__pin--active');
     }
   };
 
   var renderAdvertisement = function (advertisement) {
-    MAP.insertBefore(window.card.generateAdvertisementElement(advertisement), MAP_FILTERS_CONTAINER);
+    mapElement.insertBefore(window.card.generateAdvertisementElement(advertisement), mapFiltersContainerElement);
   };
 
   var addClickListener = function (advertisement, pinElement) {
@@ -36,10 +36,10 @@
 
       pinElement.classList.add('map__pin--active');
 
-      var popup = MAP.querySelector('.popup');
-      var popupClose = popup.querySelector('.popup__close');
+      var popupElement = mapElement.querySelector('.popup');
+      var popupCloseElement = popupElement.querySelector('.popup__close');
 
-      popupClose.addEventListener('click', function () {
+      popupCloseElement.addEventListener('click', function () {
         closePopup();
       });
     });
@@ -56,7 +56,7 @@
       addClickListener(advertisements[i], pinElement);
     }
 
-    MAP_PINS.appendChild(fragment);
+    mapPinsElement.appendChild(fragment);
   };
 
   document.addEventListener('keydown', function (evt) {

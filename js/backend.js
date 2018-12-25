@@ -4,6 +4,19 @@
 
   var REQUEST_TIMEOUT = 10000; // 10 секунд
 
+  var getErrorMessage = function (status, statusText) {
+    switch (status) {
+      case 400:
+        return 'Неверный запрос';
+      case 404:
+        return 'Ничего не найдено';
+      case 500:
+        return 'Ошибка сервера';
+      default:
+        return 'Статус ответа: ' + status + ' ' + statusText;
+    }
+  };
+
   var performRequest = function (url, method, onLoad, onError, data) {
     var xhr = new XMLHttpRequest();
 
@@ -13,7 +26,7 @@
       if (xhr.status === 200) {
         onLoad(xhr.response);
       } else {
-        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        onError(getErrorMessage(xhr.status, xhr.statusText));
       }
     });
 
