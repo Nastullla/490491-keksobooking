@@ -3,6 +3,7 @@
 (function () {
 
   var REQUEST_TIMEOUT = 10000; // 10 секунд
+  var JSON_RESPONSE_TYPE = 'json';
 
   var getErrorMessage = function (status, statusText) {
     switch (status) {
@@ -20,7 +21,7 @@
   var performRequest = function (url, method, onLoad, onError, data) {
     var xhr = new XMLHttpRequest();
 
-    xhr.responseType = 'json';
+    xhr.responseType = JSON_RESPONSE_TYPE;
 
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
@@ -42,11 +43,7 @@
 
     xhr.open(method, url);
 
-    if (method === 'POST') {
-      xhr.send(data);
-    } else {
-      xhr.send();
-    }
+    xhr.send(data);
   };
 
   var load = function (onLoad, onError) {

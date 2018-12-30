@@ -8,6 +8,12 @@
   var mapPinsElement = mapElement.querySelector('.map__pins');
   var mapFiltersContainerElement = mapElement.querySelector('.map__filters-container');
 
+  var onEscKeydown = function (evt) {
+    if (window.utils.isEscKey(evt)) {
+      closePopup();
+    }
+  };
+
   var closePopup = function () {
     hideActivePin();
     var popupElement = mapElement.querySelector('.popup');
@@ -15,6 +21,8 @@
     if (popupElement) {
       popupElement.remove();
     }
+
+    document.removeEventListener('keydown', onEscKeydown);
   };
 
   var hideActivePin = function () {
@@ -25,7 +33,7 @@
   };
 
   var renderAdvertisement = function (advertisement) {
-    mapElement.insertBefore(window.card.generateAdvertisementElement(advertisement), mapFiltersContainerElement);
+    mapElement.insertBefore(window.generateAdvertisementElement(advertisement), mapFiltersContainerElement);
   };
 
   var addClickListener = function (advertisement, pinElement) {
@@ -33,6 +41,8 @@
       closePopup();
 
       renderAdvertisement(advertisement);
+
+      document.addEventListener('keydown', onEscKeydown);
 
       pinElement.classList.add('map__pin--active');
 
@@ -47,23 +57,17 @@
 
   var setPins = function (advertisements) {
     var fragment = document.createDocumentFragment();
-    var countPins = advertisements.length < MAX_PINS_COUNT ? advertisements.length : MAX_PINS_COUNT;
+    var selectedAdvertisements = advertisements.slice(0, MAX_PINS_COUNT);
 
-    for (var i = 0; i < countPins; i++) {
-      var pinElement = window.pin.generatePin(advertisements[i]);
+    selectedAdvertisements.forEach(function (advertisement) {
+      var pinElement = window.pin.generate(advertisement);
       fragment.appendChild(pinElement);
 
-      addClickListener(advertisements[i], pinElement);
-    }
+      addClickListener(advertisement, pinElement);
+    });
 
     mapPinsElement.appendChild(fragment);
   };
-
-  document.addEventListener('keydown', function (evt) {
-    if (window.utils.isEscKey(evt)) {
-      closePopup();
-    }
-  });
 
   window.map = {
     setPins: setPins,

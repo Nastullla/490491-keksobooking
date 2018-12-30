@@ -14,31 +14,31 @@
   var getDataAvailability = function (advertisement) {
     return [
       {
-        element: '.popup__title',
+        selector: '.popup__title',
         value: advertisement.offer.title
       },
       {
-        element: '.popup__text--address',
+        selector: '.popup__text--address',
         value: advertisement.offer.address
       },
       {
-        element: '.popup__text--price',
+        selector: '.popup__text--price',
         value: advertisement.offer.price ? advertisement.offer.price + '₽/ночь' : null
       },
       {
-        element: '.popup__text--capacity',
+        selector: '.popup__text--capacity',
         value: advertisement.offer.rooms && advertisement.offer.guests ? advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостей' : null
       },
       {
-        element: '.popup__text--time',
+        selector: '.popup__text--time',
         value: advertisement.offer.checkin && advertisement.offer.checkout ? 'Заезд после ' + advertisement.offer.checkin + ', выезд до ' + advertisement.offer.checkout : null
       },
       {
-        element: '.popup__description',
+        selector: '.popup__description',
         value: advertisement.offer.description
       },
       {
-        element: '.popup__type',
+        selector: '.popup__type',
         value: advertisement.offer.type ? TypeAdvertisemenMap[advertisement.offer.type.toUpperCase()] : null
       },
     ];
@@ -51,11 +51,11 @@
     if (advertisementPhotos.length) {
       var fragmentPhotos = document.createDocumentFragment();
 
-      for (var i = 0; i < advertisementPhotos.length; i++) {
+      advertisementPhotos.forEach(function (photoUrl) {
         var photoElement = popupPhotoElement.cloneNode(true);
-        photoElement.src = advertisementPhotos[i];
+        photoElement.src = photoUrl;
         fragmentPhotos.appendChild(photoElement);
-      }
+      });
 
       while (popupPhotosElement.firstChild) {
         popupPhotosElement.firstChild.remove();
@@ -77,12 +77,14 @@
       }
 
       var fragmentFeatures = document.createDocumentFragment();
-      for (var i = 0; i < advertisementFeatures.length; i++) {
+
+      advertisementFeatures.forEach(function (feature) {
         var featureElement = document.createElement('li');
         featureElement.classList.add('popup__feature');
-        featureElement.classList.add('popup__feature--' + advertisementFeatures[i]);
+        featureElement.classList.add('popup__feature--' + feature);
         fragmentFeatures.appendChild(featureElement);
-      }
+      });
+
 
       popupFeaturesElement.appendChild(fragmentFeatures);
     } else {
@@ -90,11 +92,12 @@
     }
   };
 
-  var checkDataAvailability = function (advertisementElement, element, value) {
+  var checkDataAvailability = function (advertisementElement, selector, value) {
+    var targetElement = advertisementElement.querySelector(selector);
     if (value) {
-      advertisementElement.querySelector(element).textContent = value;
+      targetElement.textContent = value;
     } else {
-      advertisementElement.querySelector(element).remove();
+      targetElement.remove();
     }
   };
 
@@ -103,24 +106,23 @@
 
     var advertisementElement = mapCardTemplateElement.cloneNode(true);
 
-    for (var i = 0; i < dataAvailability.length; i++) {
-      checkDataAvailability(advertisementElement, dataAvailability[i].element, dataAvailability[i].value);
-    }
+    dataAvailability.forEach(function (dataAvailabilityItem) {
+      checkDataAvailability(advertisementElement, dataAvailabilityItem.selector, dataAvailabilityItem.value);
+    });
 
     renderFeatures(advertisementElement, advertisement.offer.features);
     renderPhotosList(advertisementElement, advertisement.offer.photos);
 
+    var avatarElement = advertisementElement.querySelector('.popup__avatar');
     if (advertisement.author.avatar) {
-      advertisementElement.querySelector('.popup__avatar').src = advertisement.author.avatar;
+      avatarElement.src = advertisement.author.avatar;
     } else {
-      advertisementElement.querySelector('.popup__avatar').remove();
+      avatarElement.remove();
     }
 
     return advertisementElement;
   };
 
-  window.card = {
-    generateAdvertisementElement: generateAdvertisementElement
-  };
+  window.generateAdvertisementElement = generateAdvertisementElement;
 
 })();

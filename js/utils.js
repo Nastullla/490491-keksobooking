@@ -3,6 +3,8 @@
 (function () {
 
   var DEBOUNCE_INTERVAL = 500;
+  var errorMessageElement;
+  var successMessageElement;
 
   var KeyCode = {
     ESC: 27
@@ -12,6 +14,12 @@
     return evt.keyCode === KeyCode.ESC;
   };
 
+  var setDisabled = function (array, isDisabled) {
+    array.forEach(function (element) {
+      element.disabled = isDisabled;
+    });
+  };
+
   var createMessageElement = function (id, selector) {
     var messageTemplateElement = document.querySelector('#' + id).content.querySelector('.' + selector);
     var message = messageTemplateElement.cloneNode(true);
@@ -19,24 +27,18 @@
     return message;
   };
 
-  var getMessageElement = function (id, selector) {
-    var messageElement = document.querySelector('.' + selector);
-    if (!messageElement) {
-      messageElement = createMessageElement(id, selector);
-    }
-    return messageElement;
-  };
-
   var onError = function (errorMessage, onClickButton) {
-    var errorElement = getMessageElement('error', 'error');
-    errorElement.querySelector('.error__message').textContent = errorMessage;
-    errorElement.classList.remove('hidden');
+    if (!errorMessageElement) {
+      errorMessageElement = createMessageElement('error', 'error');
+    }
+    errorMessageElement.querySelector('.error__message').textContent = errorMessage;
+    errorMessageElement.classList.remove('hidden');
 
-    var errorButtonElement = errorElement.querySelector('.error__button');
+    var errorButtonElement = errorMessageElement.querySelector('.error__button');
 
     var closeErrorMessage = function () {
-      errorElement.classList.add('hidden');
-      errorElement.removeEventListener('click', onClick);
+      errorMessageElement.classList.add('hidden');
+      errorMessageElement.removeEventListener('click', onClick);
       document.removeEventListener('keydown', onKeyDown);
       errorButtonElement.removeEventListener('click', onClickErrorButton);
     };
@@ -58,30 +60,32 @@
       }
     };
 
-    errorElement.addEventListener('click', onClick);
+    errorMessageElement.addEventListener('click', onClick);
     document.addEventListener('keydown', onKeyDown);
     errorButtonElement.addEventListener('click', onClickErrorButton);
   };
 
   var onSuccess = function () {
-    var successElement = getMessageElement('success', 'success');
-    successElement.classList.remove('hidden');
+    if (!successMessageElement) {
+      successMessageElement = createMessageElement('success', 'success');
+    }
+    successMessageElement.classList.remove('hidden');
 
     var onClick = function () {
-      successElement.classList.add('hidden');
-      successElement.removeEventListener('click', onClick);
+      successMessageElement.classList.add('hidden');
+      successMessageElement.removeEventListener('click', onClick);
       document.removeEventListener('keydown', onKeyDown);
     };
 
     var onKeyDown = function (evt) {
       if (isEscKey(evt)) {
-        successElement.classList.add('hidden');
-        successElement.removeEventListener('click', onClick);
+        successMessageElement.classList.add('hidden');
+        successMessageElement.removeEventListener('click', onClick);
         document.removeEventListener('keydown', onKeyDown);
       }
     };
 
-    successElement.addEventListener('click', onClick);
+    successMessageElement.addEventListener('click', onClick);
     document.addEventListener('keydown', onKeyDown);
   };
 
@@ -103,7 +107,8 @@
     isEscKey: isEscKey,
     onError: onError,
     onSuccess: onSuccess,
-    debounce: debounce
+    debounce: debounce,
+    setDisabled: setDisabled
   };
 
 })();

@@ -3,14 +3,15 @@
 (function () {
 
   var onSuccessLoad = function (data) {
-    window.data.correctData = data.filter(function (element) {
+    window.data.correctAdvertisements = data.filter(function (element) {
       return element.offer;
     });
-    window.map.setPins(window.data.correctData);
+    window.map.setPins(window.data.correctAdvertisements);
+    window.filtersForm.activateState();
   };
 
   window.data = {
-    correctData: [],
+    correctAdvertisements: [],
     onSuccessLoad: onSuccessLoad
   };
 

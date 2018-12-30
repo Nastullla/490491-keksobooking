@@ -20,12 +20,9 @@
   };
 
   var filterFeatures = function (features, filterFeaturesValues) {
-    for (var i = 0; i < filterFeaturesValues.length; i++) {
-      if (features.indexOf(filterFeaturesValues[i]) === -1) {
-        return false;
-      }
-    }
-    return true;
+    return !filterFeaturesValues.some(function (featureValue) {
+      return features.indexOf(featureValue) === -1;
+    });
   };
 
   var filterAdvertisements = function (date, filtersValue) {
@@ -41,8 +38,6 @@
     return filteredAdvertisements;
   };
 
-  window.filterAdvertisements = {
-    filterAdvertisements: filterAdvertisements
-  };
+  window.filterAdvertisements = filterAdvertisements;
 
 })();

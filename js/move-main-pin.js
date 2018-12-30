@@ -34,6 +34,8 @@
       startCoords.y = moveEvt.clientY;
       mapPinMainElement.style.top = endCoords.y + 'px';
     }
+
+    window.form.setAddress();
   };
 
   var onErrorLoad = function (errorText) {
