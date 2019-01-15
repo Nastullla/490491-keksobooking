@@ -4,18 +4,20 @@
 
   var REQUEST_TIMEOUT = 10000; // 10 секунд
   var JSON_RESPONSE_TYPE = 'json';
+  var RESPONSE_ERROR_STATUS_MESSAGE = 'Статус ответа: {status} {statusText}';
+  var ResponseStatuses = {
+    '400': 'Неверный запрос',
+    '404': 'Ничего не найдено',
+    '500': 'Ошибка сервера'
+  };
 
   var getErrorMessage = function (status, statusText) {
-    switch (status) {
-      case 400:
-        return 'Неверный запрос';
-      case 404:
-        return 'Ничего не найдено';
-      case 500:
-        return 'Ошибка сервера';
-      default:
-        return 'Статус ответа: ' + status + ' ' + statusText;
+    var messageText = ResponseStatuses[status];
+    if (!messageText) {
+      messageText = RESPONSE_ERROR_STATUS_MESSAGE.replace('{status}', status).replace('{statusText}', statusText);
     }
+
+    return messageText;
   };
 
   var performRequest = function (url, method, onLoad, onError, data) {

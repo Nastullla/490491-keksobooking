@@ -14,8 +14,8 @@
     return evt.keyCode === KeyCode.ESC;
   };
 
-  var setDisabled = function (array, isDisabled) {
-    array.forEach(function (element) {
+  var setDisabled = function (elements, isDisabled) {
+    elements.forEach(function (element) {
       element.disabled = isDisabled;
     });
   };

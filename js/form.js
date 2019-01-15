@@ -7,6 +7,11 @@
   var NOT_FOR_GUESTS_ROOMS_VALUE = '100';
   var NOT_FOR_GUESTS_VALUE = '0';
 
+  var VALIDATION_MIN_LIMIT = 'Число должно быть больше {limit}';
+  var VALIDATION_MAX_LIMIT = 'Число должно быть меньше {limit}';
+  var VALIDATION_MIN_LENGTH_LIMIT = 'Поле должно состоять минимум из {minlength}-х символов';
+  var VALIDATION_REQUIRED_FIELD = 'Обязательное поле';
+
   var STARTING_COORDINATE = {
     x: '570px',
     y: '375px'
@@ -55,11 +60,7 @@
 
   var setCapacityDependency = function (roomsValue) {
     for (var i = 0; i < capacityElement.length; i++) {
-      if (roomsValue === NOT_FOR_GUESTS_ROOMS_VALUE) {
-        capacityElement[i].disabled = capacityElement[i].value !== NOT_FOR_GUESTS_VALUE;
-      } else {
-        capacityElement[i].disabled = !(roomsValue >= capacityElement[i].value && capacityElement[i].value !== NOT_FOR_GUESTS_VALUE);
-      }
+      capacityElement[i].disabled = roomsValue === NOT_FOR_GUESTS_ROOMS_VALUE ? capacityElement[i].value !== NOT_FOR_GUESTS_VALUE : !(roomsValue >= capacityElement[i].value && capacityElement[i].value !== NOT_FOR_GUESTS_VALUE);
     }
   };
 
@@ -89,6 +90,7 @@
     adFormReset.disabled = true;
     descriptionInputElement.disabled = true;
     window.form.activeState = false;
+    window.advertisementPhoto.removeAllImages();
     removeEventListeners();
   };
 
@@ -146,13 +148,13 @@
 
   var validateField = function (element) {
     if (element.validity.tooShort) {
-      element.setCustomValidity('Поле должно состоять минимум из ' + element.minLength + '-х символов');
+      element.setCustomValidity(VALIDATION_MIN_LENGTH_LIMIT.replace('{minlength}', element.minLength));
     } else if (element.validity.rangeUnderflow) {
-      element.setCustomValidity('Число должно быть больше ' + element.min);
+      element.setCustomValidity(VALIDATION_MIN_LIMIT.replace('{limit}', element.min));
     } else if (element.validity.rangeOverflow) {
-      element.setCustomValidity('Число должно быть меньше ' + element.max);
+      element.setCustomValidity(VALIDATION_MAX_LIMIT.replace('{limit}', element.max));
     } else if (element.validity.valueMissing) {
-      element.setCustomValidity('Обязательное поле');
+      element.setCustomValidity(VALIDATION_REQUIRED_FIELD);
     } else {
       element.setCustomValidity('');
     }
@@ -165,9 +167,9 @@
   var onFieldInput = function (evt) {
     var target = evt.target;
     if (!target.value.length) {
-      target.setCustomValidity('Обязательное поле');
+      target.setCustomValidity(VALIDATION_REQUIRED_FIELD);
     } else if (target.value.length < target.minLength) {
-      target.setCustomValidity('Поле должно состоять минимум из ' + target.minLength + '-х символов');
+      target.setCustomValidity(VALIDATION_MIN_LENGTH_LIMIT.replace('{minlength}', target.minLength));
     } else {
       target.setCustomValidity('');
     }

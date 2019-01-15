@@ -2,7 +2,11 @@
 
 (function () {
 
-  var TypeAdvertisemenMap = {
+  var TRANSLATION_OFFER_PRICE = '{price} ₽/ночь';
+  var TRANSLATION_OFFER_ROOMS_GUESTS = '{rooms} комнаты для {guests} гостей';
+  var TRANSLATION_OFFER_CHECKIN_CHECKOUT = 'Заезд после {checkin}, выезд до {checkout}';
+
+  var TypeAdvertisementMap = {
     'FLAT': 'Квартира',
     'BUNGALO': 'Бунгало',
     'HOUSE': 'Дом',
@@ -23,15 +27,15 @@
       },
       {
         selector: '.popup__text--price',
-        value: advertisement.offer.price ? advertisement.offer.price + '₽/ночь' : null
+        value: advertisement.offer.price ? TRANSLATION_OFFER_PRICE.replace('{price}', advertisement.offer.price) : null
       },
       {
         selector: '.popup__text--capacity',
-        value: advertisement.offer.rooms && advertisement.offer.guests ? advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостей' : null
+        value: advertisement.offer.rooms && advertisement.offer.guests ? TRANSLATION_OFFER_ROOMS_GUESTS.replace('{rooms}', advertisement.offer.rooms).replace('{guests}', advertisement.offer.guests) : null
       },
       {
         selector: '.popup__text--time',
-        value: advertisement.offer.checkin && advertisement.offer.checkout ? 'Заезд после ' + advertisement.offer.checkin + ', выезд до ' + advertisement.offer.checkout : null
+        value: advertisement.offer.checkin && advertisement.offer.checkout ? TRANSLATION_OFFER_CHECKIN_CHECKOUT.replace('{checkin}', advertisement.offer.checkin).replace('{checkout}', advertisement.offer.checkout) : null
       },
       {
         selector: '.popup__description',
@@ -39,7 +43,7 @@
       },
       {
         selector: '.popup__type',
-        value: advertisement.offer.type ? TypeAdvertisemenMap[advertisement.offer.type.toUpperCase()] : null
+        value: advertisement.offer.type ? TypeAdvertisementMap[advertisement.offer.type.toUpperCase()] : null
       },
     ];
   };
